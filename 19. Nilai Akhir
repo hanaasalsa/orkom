@@ -1,0 +1,148 @@
+# Nilai Akhir
+Buatlah fungsi nilai_akhir() untuk menghitung nilai akhir dari komponen nilai berikut:
+
+UTS (30%)
+UAS (30%)
+UTSP (10%)
+UASP (10%)
+projek (10%)
+kuis (5%)
+tugas (5%)
+
+Parameter fungsi di-passing melalui stack. Keluaran fungsi disimpan pada register eax. Keluaran berupa integer hasil pembulatan dari nilai akhir.
+
+Berikut contoh pemanggilan fungsi nilai_akhir(uts, uas, utsp, uasp, proj, kuis, tugas) tersebut:
+
+; nilai_akhir = (uts*30 + uas*30 + utsp*10 + uasp*10 + proj*10 + kuis*5 + tugas*5) / 100
+
+push dword [tugas]
+push dword [kuis]
+push dword [proj]
+push dword [uasp]
+push dword [utsp]
+push dword [uas]
+push dword [uts]
+call nilai_akhir
+### Format Masukan
+Dua buah bilangan bulat dengan format sesuai ketentuan program SWI-Prolog atau GNU-Prolog.
+
+### Format Keluaran
+Sebuah bilangan bulat hasil penjumlahan dua bilangan masukan, dan diakhiri dengan newline.
+
+### Contoh Masukan
+```
+70 60 100 75 80 88 80
+```
+### Contoh Keluaran
+```
+73
+```
+### Code
+```
+global main
+    extern printf
+    extern scanf
+    extern fflush
+ 
+section .data
+    ngescan db "%d %d %d %d %d %d %d", 0
+    ngeprin db "%d", 10, 0
+    e       dd 100
+    lima    dd 50
+ 
+section .bss
+    uts     resd 4
+    uas     resd 4
+    utsp    resd 4
+    uasp    resd 4
+    proj    resd 4
+    kuis    resd 4
+    tugas   resd 4
+ 
+section .text
+main:
+    push tugas
+    push kuis
+    push proj
+    push uasp
+    push utsp
+    push uas
+    push uts
+    push ngescan
+    call scanf
+    add esp, 32
+ 
+; nilai_akhir = (uts*30 + uas*30 + utsp*10 + uasp*10 + proj*10 + kuis*5 + tugas*5) / 100
+    push dword [tugas]
+    push dword [kuis]
+    push dword [proj]
+    push dword [uasp]
+    push dword [utsp]
+    push dword [uas]
+    push dword [uts]
+    call nilai_akhir
+    add esp, 28
+ 
+    push eax
+    push ngeprin            ;printf("%d\n", eax)
+    call printf
+    add esp, 8
+ 
+    jmp exit
+ 
+nilai_akhir:
+    push    ebp
+    mov     ebp, esp
+ 
+    mov     eax, [ebp+8]    ;eax=uts
+    add     eax, [ebp+12]   ;eax+=uas
+    mov     ebx, 30         ;ebx=30
+    mul     ebx             ;ecx=eax*ebx
+    mov     ecx, eax        ;ecx=eax
+ 
+    mov eax, [ebp+16]
+    add eax, [ebp+20]
+    add eax, [ebp+24]
+    mov ebx, 10
+    mul ebx
+    add ecx, eax
+ 
+    mov eax, [ebp+28]
+    add eax, [ebp+32]
+    mov ebx, 5
+    mul ebx
+    add ecx, eax
+    mov eax, ecx
+ 
+    cdq
+    div dword [e]
+ 
+    push eax
+    cmp edx, 50
+    jg tambahsatu
+    jbe exitsay
+ 
+exitsay:
+    push eax
+    mov esp, ebp
+    pop ebp
+    ret
+    jmp exit
+ 
+tambahsatu:
+    push eax
+    add eax, 1
+ 
+    mov esp, ebp
+    pop ebp
+    ret
+    jmp exit
+ 
+exit:
+    push 0
+    call fflush
+    add esp, 4
+ 
+    mov eax, 0
+    ret
+```
