@@ -1,0 +1,15 @@
+# Mencari Huruf 
+
+Buatlah program untuk mencari kemunculan pertama suatu huruf dari teks yang diberikan. Keluaran adalah posisi huruf relatif 
+terhadap awal teks. Jika huruf tidak ditemukan, cetak `tidak ada`. Panjang teks selalu 50 karakter.
+
+### Contoh Masukan
+```
+satuduatigaempatlimaenamtujuhdelapansembilansepulu
+d
+```
+
+### Contoh Keluaran
+```
+5
+```
