@@ -1,2 +1,2 @@
 # orkom
-buat belajar aja si ini mah
+buat belajar aja ini mah. sabar dan semangaaattt aku!
