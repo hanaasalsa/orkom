@@ -1,0 +1,59 @@
+# Jarak dari Titik Asal
+Buatlah program untuk menghitung jarak Euclid suatu titik (x, y) dari titik asal (0, 0). Gunakan FSQRT untuk menghitung akar kuadrat.
+
+### Contoh Masukan
+```
+3.0 4.0
+```
+### Contoh Keluaran
+```
+5.000000
+```
+
+### Code
+```
+global main
+    extern printf, scanf, fflush
+ 
+section .data
+    ngescan db "%lf %lf", 0
+    ngeprint db "%lf", 10, 0 ;%f adlah float/double
+ 
+section .bss
+    a resq 4
+    b resq 4
+    h resq 4
+    j resq 4
+ 
+section .text
+main:
+    push a
+    push b
+    push ngescan
+    call scanf
+    add esp, 12
+ 
+    fld qword [a]
+    fmul qword [a]
+ 
+    fld qword [b]
+    fmul qword [b]
+ 
+    faddp
+    fsqrt
+    fst  qword [h]
+ 
+    push dword [h+4]
+    push dword [h]
+    push ngeprint
+    call printf
+    add esp, 12
+ 
+exit:
+    push 0
+    call fflush
+    add esp, 4
+ 
+    mov eax, 0
+    ret
+```
